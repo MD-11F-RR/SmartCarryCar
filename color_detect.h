@@ -4,5 +4,10 @@ void color_init();
 void color_T0interrupt();
 void color_INT0interrupt();
 void color_calibrate();
-void color_printf();
+int color_printf(colors);
+enum colors{
+  red = 1,
+  green,
+  blue
+}colors;
 #endif
