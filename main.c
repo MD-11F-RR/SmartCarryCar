@@ -38,19 +38,19 @@ int main() {
 
 void T1interrupt() interrupt 3 {
 	EA = 0;
-  motor_interrupt();
+	motor_interrupt();
 	EA = 1;
 }
 
 void T0interrupt() interrupt 1 {
 	EA = 0;
-  color_T0interrupt();
+	color_T0interrupt();
 	EA = 1;
 }
 
 void INT0interrupt() interrupt 0 {
 	EA = 0;
-  color_INT0interrupt();
+	color_INT0interrupt();
 	EA = 1;
 }
 
