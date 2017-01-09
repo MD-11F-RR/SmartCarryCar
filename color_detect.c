@@ -1,8 +1,5 @@
 #include <reg52.h>
-//#include "serial.h"
-#include <stdio.h>
 #define COLOR_TIME 19456
-
 
 unsigned int color_count_store[3] = {0,0,0};
 //RGB for color[0-2];
@@ -102,13 +99,44 @@ void color_calibrate(){
   color_calibrated = 1;
 }
 
-void color_printf(){
+
+
+
+int color_printf(char colors){
   if (color_calibrated == 1) {
-    printf("R = %d\n",color_true[0]);
-    printf("G = %d\n",color_true[1]);
-    printf("B = %d\n",color_true[2]);
+    switch (colors) {
+      case 1:
+      return color_true[0];
+      break;
+
+      case 2:
+      return color_true[1];
+      break;
+
+      case 3:
+      return color_true[2];
+			break;
+
+			default:
+			return 999;
+    }
   }
   else{
-    printf("not calibrated\n");
+    switch (colors) {
+      case 1:
+      return color_count_store[0];
+      break;
+
+      case 2:
+      return color_count_store[1];
+      break;
+
+      case 3:
+      return color_count_store[2];
+      break;
+			
+			default:
+				return 999;
   }
+}
 }
