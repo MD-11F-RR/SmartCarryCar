@@ -9,7 +9,7 @@ unsigned char stat = 0;
 unsigned int pred, pgreen, pblue;
 //白平衡参数，通过校准调节
 
-unsigned int color_true[3] = {0,0,0};
+float color_true[3] = {0,0,0};
 //转换为256^3色的结果
 
 bit color_calibrated = 0;
@@ -92,9 +92,9 @@ void color_INT0interrupt(){
 }
 
 void color_calibrate(){
-  pred = 255 / color_count_store[0];
-  pgreen = 255 / color_count_store[1];
-  pblue = 255 / color_count_store[2];
+  pred = 255.0 / color_count_store[0];
+  pgreen = 255.0 / color_count_store[1];
+  pblue = 255.0 / color_count_store[2];
   //校准256色阶
   color_calibrated = 1;
 }
@@ -134,7 +134,7 @@ int color_printf(char colors){
       case 3:
       return color_count_store[2];
       break;
-			
+
 			default:
 				return 999;
   }
