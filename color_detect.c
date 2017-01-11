@@ -4,9 +4,10 @@
 unsigned int color_count_store[3] = {0,0,0};
 //RGB for color[0-2];
 unsigned int color_count = 0;
-unsigned char stat = 0;
+unsigned char color_stat = 0;
+//读到第几位的值
 
-unsigned int pred, pgreen, pblue;
+float pred, pgreen, pblue;
 //白平衡参数，通过校准调节
 
 float color_true[3] = {0,0,0};
@@ -48,15 +49,25 @@ void color_init(){
   }//INT0 interrupt init
 }
 
+void color_shutdown() {
+  ET0 = 0;
+  //关闭定时器0中断
+  TR0 = 0;
+  //关闭定时器0
+
+  EX0 = 0;
+  //关闭外部中断
+}
+
 void color_T0interrupt() {
   TR0 = 0;
   //关掉定时器
   TH0 = COLOR_TIME >> 8;
   TL0 = COLOR_TIME;
   //重置定时器时间
-  ++stat;
+  ++color_stat;
 
-  switch (stat) {
+  switch (color_stat) {
     case 1:
     s2 = 0; s3 = 0; color_count = 0;
     //第一次用于选择红色滤镜，无获取颜色值，脉冲数清零
@@ -73,15 +84,15 @@ void color_T0interrupt() {
     break;
 
     case 4:
-    color_count_store[1] = color_count; s2 = 1; s3 = 0; stat = 0;
+    color_count_store[1] = color_count; s2 = 1; s3 = 0; color_stat = 0;
     //获取绿色数值并选择无滤镜，脉冲数清零
     break;
 
   }
 
-  color_true[0] = color_count_store[0] * pred;
-  color_true[1] = color_count_store[1] * pgreen;
-  color_true[2] = color_count_store[2] * pblue;
+  color_true[0] = (int)(color_count_store[0] * pred);
+  color_true[1] = (int)(color_count_store[1] * pgreen);
+  color_true[2] = (int)(color_count_store[2] * pblue);
 
   TR0 = 1;
   //重新打开定时器
@@ -99,9 +110,6 @@ void color_calibrate(){
   color_calibrated = 1;
 }
 
-
-
-
 int color_printf(char colors){
   if (color_calibrated == 1) {
     switch (colors) {
@@ -118,7 +126,7 @@ int color_printf(char colors){
 			break;
 
 			default:
-			return 999;
+			return 9999;
     }
   }
   else{
@@ -136,7 +144,7 @@ int color_printf(char colors){
       break;
 
 			default:
-				return 999;
+				return 9999;
   }
 }
 }
