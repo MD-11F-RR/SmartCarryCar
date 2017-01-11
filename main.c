@@ -10,11 +10,17 @@ char info;
 void serialdeal() {
 	switch (info) {
 		case 'p':
-		printf("RED:%d\nGREEN:%d\nBLUE:%d\n",(int)color_printf(1),(int)color_printf(2),(int)color_printf(3));
+		printf("RED:%d\nGREEN:%d\nBLUE:%d\n",color_printf(1),color_printf(2),color_printf(3));
 		break;
 
 		case 'c':
 		color_calibrate();
+		printf("calibrated\nvalue:\n");
+		printf("RED:%d\nGREEN:%d\nBLUE:%d\n",color_printf(1),color_printf(2),color_printf(3));
+		break;
+
+		case 't':
+		printf("loop back test\n");
 		break;
 	}
 }
@@ -58,7 +64,5 @@ EA = 0;
 		newinfo = 1;
 		info = SBUF;
   }
-
-
 EA = 1;
 }
