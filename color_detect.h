@@ -6,9 +6,4 @@ void color_INT0interrupt();
 void color_calibrate();
 int color_printf(colors);
 void color_shutdown();
-enum colors{
-  red = 1,
-  green,
-  blue
-}colors;
 #endif
