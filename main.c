@@ -1,22 +1,22 @@
 #include <reg52.h>
 #include <stdio.h>
 #include "serial.h"
-#include "motor.h"
-#include "route_track.h"
 #include "color_detect.h"
+#include "motor.h"
 
 bit newinfo = 0;
 char info;
 void serialdeal() {
 	switch (info) {
 		case 'p':
-		printf("RED:%d\nGREEN:%d\nBLUE:%d\n",color_printf(1),color_printf(2),color_printf(3));
+		//printf("RED:%d\nGREEN:%d\nBLUE:%d\n",color_printf(1),color_printf(2),color_printf(3));
 		break;
 
 		case 'c':
 		color_calibrate();
 		printf("calibrated\nvalue:\n");
-		printf("RED:%d\nGREEN:%d\nBLUE:%d\n",color_printf(1),color_printf(2),color_printf(3));
+		//printf("RED:%d\nGREEN:%d\nBLUE:%d\n",color_printf(1),color_printf(2),color_printf(3));
+		color_check();		
 		break;
 
 		case 't':
@@ -26,8 +26,6 @@ void serialdeal() {
 }
 
 int main() {
-	serial_init();
-	color_init();
 	EA = 1;
 	while(1){
 	if(newinfo == 1){
