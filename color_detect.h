@@ -4,7 +4,8 @@
 void color_T0interrupt();
 void color_INT0interrupt();
 void color_calibrate();
-//int color_printf(colors);
+int color_printf(colors);
 //void color_shutdown();
 char color_check();
+//void color_shutdown();
 #endif
