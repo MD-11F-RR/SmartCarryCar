@@ -7,7 +7,8 @@ void ulotasonic_init() {
   ET0 = 0;			//不允许中断，只计时
   TMOD &= 0XF0;
   TMOD |= 0X09;
-  TR0 = 1;			//定时器0开始运行
+  TR0 = 1;			//定时器0开始运行，待有高电平就开始计时
+	//注意防止颜色传感器干扰
   //定时器0初始化
 
   IT0 = 1;		//下降沿触发
@@ -53,4 +54,10 @@ int ultrasonic_return() {
   else{
     return 9999;
   }
+}
+
+int ultrasonic_check(){
+	ulotasonic_init();
+	ultrasonic_time = 0;
+
 }
