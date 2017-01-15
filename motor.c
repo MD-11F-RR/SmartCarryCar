@@ -44,6 +44,7 @@ void motor_init(){
   TR1 = 1;
   ET1 = 1;
   //定时器开始并允许中断
+  //使用定时器
 
   Lmotor = 0;
   Rmotor = 0;
@@ -101,7 +102,7 @@ void motor_ccw() {
   pwm_motorL = MID_POINT + step;
   pwm_motorR = MID_POINT + step;
 }
-//电机前进
+//电机逆时针
 
 void motor_left() {
   pwm_motorL = MID_POINT;
@@ -119,19 +120,19 @@ void motor_cw() {
   pwm_motorL = MID_POINT - step;
   pwm_motorR = MID_POINT - step;
 }
-//向后走
+//顺时针
 
 void motor_backward(){
   pwm_motorL = MID_POINT + step;
   pwm_motorR = MID_POINT - step;
 }
-//顺时针转动
+//向后转
 
 void motor_forward () {
   pwm_motorL = MID_POINT - step;
   pwm_motorR = MID_POINT + step;
 }
-//逆时针转动
+//前进
 
 void motor_interrupt(){
   if (stat_motor == 1) {
@@ -169,4 +170,4 @@ void motor_interrupt(){
     }
   }
 }
-//放在中断函数里面，可以用switch-case
+//放在中断函数里面，可以用函数指针
