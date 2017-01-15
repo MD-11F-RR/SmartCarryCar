@@ -57,6 +57,12 @@ void color_shutdown() {
 
   EX0 = 0;
   //关闭外部中断
+
+	s0 = 0;
+	s1 = 0;
+	s2 = 0;
+	s3 = 0;
+	//关闭四个开关，防止干扰其他用到INT0中断的传感器
 }
 //停止函数
 
@@ -69,7 +75,6 @@ void color_T0interrupt() {
   TH0 = COLOR_TIME >> 8;
   TL0 = COLOR_TIME;
   //重置定时器时间
-  ++color_stat;
 /*
   switch (color_stat) {
     case 1:
@@ -96,36 +101,40 @@ void color_T0interrupt() {
     break;
   }
   */
-  if (color_avgP != 0 && color_avgP != &color_avgP[30]){
-    switch (color_stat) {
-      case 1:
-      s2 = 0; s3 = 0;
-      color_count = 0;
-      //第一次用于选择红色滤镜，无获取颜色值，脉冲数清零
-      break;
+	if (color_avgP != 0) {
+		for (color_stat = 0; color_stat < 30; color_stat++, color_avgP++) {
+			switch (color_stat % 4) {
+				case 0:
+				s2 = 0; s3 = 0;
+				color_count = 0;
+				//第一次用于选择红色滤镜，无获取颜色值，脉冲数清零
+				break;
 
-      case 2:
-      s2 = 0; s3 = 1;
-      *color_avgP++ = color_count;
-      color_count = 0;
-      //获取红色数值并选择蓝色滤镜，脉冲数清零
-      break;
+				case 1:
+				s2 = 0; s3 = 1;
+				*color_avgP++ = color_count;
+				color_count = 0;
+				//获取红色数值并选择蓝色滤镜，脉冲数清零
+				break;
 
-      case 3:
-      s2 = 1; s3 = 1;
-      *color_avgP++ = color_count;
-      color_count = 0;
-      //获取蓝色数值并选择绿色滤镜，脉冲数清零
-      break;
+				case 2:
+				s2 = 1; s3 = 1;
+				*color_avgP++ = color_count;
+				color_count = 0;
+				//获取蓝色数值并选择绿色滤镜，脉冲数清零
+				break;
 
-      case 4:
-      s2 = 1; s3 = 0;
-      *color_avgP++ = color_count;
-      color_stat = 0;
-      //获取绿色数值并选择无滤镜，脉冲数清零
-      break;
-    }
-  }
+				case 3:
+				s2 = 1; s3 = 0;
+				*color_avgP++ = color_count;
+				color_stat = 0;
+				//获取绿色数值并选择无滤镜，脉冲数清零
+				break;
+			}
+		}
+	}
+
+
 
   TR0 = 1;
   //重新打开定时器
